@@ -1,34 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
+import { developersFetched } from "../store/developersActions";
+import { fetchDevelopers } from "../store/developersActions";
 
 class DevelopersList extends React.Component {
-  state = {
-    loading: true,
-    developers: []
-  };
+  // state = {
+  //   loading: true
+  // };
+
+  // componentDidMount() {
+  //   fetch(
+  //     "https://codaisseur-coders-network.herokuapp.com/developers?offset=10&limit=20"
+  //   )
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log("this should be all the data", data);
+  //       // data is object with two properties count and rows, rows holds the array with information we need
+  //       console.log(data.rows);
+  //       this.props.dispatch(developersFetched(data.rows));
+  //     });
+  // }
 
   componentDidMount() {
-    fetch(
-      "https://codaisseur-coders-network.herokuapp.com/developers?offset=10&limit=20"
-    )
-      .then(res => res.json())
-      .then(data => {
-        console.log("this should be all the data", data);
-        // data is object with two properties count and rows, rows holds the array with information we need
-        console.log(data.rows);
-        this.setState({ developers: data.rows, loading: false });
-      });
+    console.log("I Should be number one. Smash hit");
+    this.props.dispatch(fetchDevelopers);
   }
 
   render() {
-    if (this.state.loading) {
+    if (!this.props.developers) {
       return <div>Loading...</div>;
     } else
       return (
         <div>
-          <div>We have {this.state.developers.length} developers by now!</div>
+          <div>We have {this.props.developers.length} developers by now!</div>
           <ul>
-            {this.state.developers.map(dev => {
+            {this.props.developers.map(dev => {
               return (
                 <li>
                   {dev.name}, e-mail: {dev.email}
@@ -43,7 +49,7 @@ class DevelopersList extends React.Component {
 
 function mapStateToProps(reduxState) {
   return {
-    users: reduxState.developersReducer
+    developers: reduxState.developers
   };
 }
 
